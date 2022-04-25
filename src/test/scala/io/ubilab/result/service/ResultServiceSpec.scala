@@ -1,9 +1,11 @@
 package io.ubilab.result.service
 
 import io.ubilab.result.model.Result
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 
-class ResultServiceSpec extends FunSpec with Matchers {
+class ResultServiceSpec extends AnyFunSpec with Matchers {
 
   describe("Step 1 : initialisation du projet avec 0 et 1 resultat") {
 
