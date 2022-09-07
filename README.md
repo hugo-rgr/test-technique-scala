@@ -13,7 +13,7 @@ Les tests:
 
 
 L'objectif et de faire passer tous les tests unitaires 1 à 4 dans l'ordre.
-* Chaque étape doit être une branche git crée et chaque test unitaire implémenté un nouveau commit.
+* Chaque étape doit être une branche git crée.
 * Vous pouvez modifier comme vous le souhaitez les fichiers, tant que les tests unitaires passent. (c'est même conseillé :D)
 * Nous ne voulons pas que vous ajoutiez de bibliothèques pour vous aider dans ce projet (pour les 3 premières étapes)
     
