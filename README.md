@@ -23,6 +23,7 @@ Chez Ubilab nous aimons :
 * le code simple lisible et élégant
 * le code maintenable,
 * le code testable,
+* Le typage fort
 
 Ayez toujours à l'esprit que c'est principalement ces critères que nous jugerons.
 
