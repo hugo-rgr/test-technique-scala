@@ -48,31 +48,42 @@ class ResultServiceSpec extends AnyFunSpec with Matchers {
   }
 
   describe("Après l'ajout de 3 résultats,") {
-    pending
     // init le service avec 3 resultats
+    val resultService = ResultService.build
+
+    resultService.addResult(Result(46,76,List(42),false,Nil,"test1"))
+    resultService.addResult(Result(3,98,List(46),false,Nil,"test2"))
+    resultService.addResult(Result(59,70,List(38),false,Nil,"test3"))
 
     it("devrait avoir une liste de 3 resultats non vue aprés l'ajout de 3 resultat.") {
-      true shouldEqual false
+      resultService.getAllResultUnSeen().length shouldEqual 3
     }
 
     it("ne devrait pas authorisé l'ajout d'un résultats avec un id existant") {
-      true shouldEqual false
+      resultService.addResult(Result(59,75,List(50),false,Nil,"test4"))
+
+      resultService.getAllResult.length shouldEqual 3
     }
 
     it("devrait avoir 1 resultats vue dans la liste aprés la vision d'un resultat") {
-      true shouldEqual false
+      resultService.seenResult(46)
+      resultService.getAllResultSeen().length shouldEqual 1
     }
 
     it("devrait avoir les 3 resultats vue dans la liste aprés qu'il soit tous vue") {
-      true shouldEqual false
+      resultService.seenResult(3)
+      resultService.seenResult(59)
+      resultService.getAllResultSeen().length shouldEqual 3
     }
 
     it("devrait avoir plus que 2 resultats vue dans la liste aprés qu'il soit tous vue puis 1 ou la vue est enlevé") {
-      true shouldEqual false
+      resultService.getAllResultSeen().length shouldEqual 3
+      resultService.unseenResult(46)
+      resultService.getAllResultSeen.length shouldEqual 2
     }
 
     it("ne devrait pas planté aprés la vision d\\'un resultat non ajouté") {
-      true shouldEqual false
+      resultService.seenResult(100)
     }
 
   }
