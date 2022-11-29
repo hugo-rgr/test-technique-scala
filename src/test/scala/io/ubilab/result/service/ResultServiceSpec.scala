@@ -18,7 +18,6 @@ class ResultServiceSpec extends AnyFunSpec with Matchers {
   }
 
   describe("Après l'ajout d'un résultat,") {
-    pending
 
     val resultService = ResultService.build
 
