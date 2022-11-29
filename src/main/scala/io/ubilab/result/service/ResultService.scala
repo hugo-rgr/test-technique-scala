@@ -26,7 +26,7 @@ class ResultService {
   }
 
 
-  def seenResult(idResult:Int) = {
+  def seenUpdate(idResult:Int, seen:Boolean) = {
     var idSeen: Boolean = false
     var i: Int = 0
     val listLength: Int = getAllResult.length
@@ -35,28 +35,20 @@ class ResultService {
       var res = resultsList(i)
 
       if(res.id == idResult){
-        val resCopy = res.copy(isSeen=true) //preserve full immutability of Result objects (no turning isSeen into a var)
+        val resCopy = res.copy(isSeen=seen) //preserve full immutability of Result objects (no turning isSeen into a var)
         resultsList = resultsList.updated(i,resCopy)
         idSeen = true
       }
+
+      i+=1
     }
   }
 
-  def unseenResult(idResult:Int) = {
-    var idSeen: Boolean = false
-    var i: Int = 0
-    val listLength: Int = getAllResult.length
+  def seenResult(idResult:Int) =
+    seenUpdate(idResult, seen=true)
 
-    while(idSeen == false && i != listLength){ //id is unique, no need to continue when it is found
-      var res = resultsList(i)
-
-      if(res.id == idResult){
-        val resCopy = res.copy(isSeen=false) //preserve full immutability of Result objects (no turning isSeen into a var)
-        resultsList = resultsList.updated(i,resCopy)
-        idSeen = true
-      }
-    }
-  }
+  def unseenResult(idResult:Int) =
+    seenUpdate(idResult, seen=false)
 
 
   def getAllResult():List[Result] = resultsList
