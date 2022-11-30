@@ -60,9 +60,8 @@ class ResultServiceSpec extends AnyFunSpec with Matchers {
     }
 
     it("ne devrait pas authorisé l'ajout d'un résultats avec un id existant") {
-      resultService.addResult(Result(59,75,List(50),false,Nil,"test4"))
-
-      resultService.getAllResult.length shouldEqual 3
+      val resultNotAuthorized = Result(59,75,List(50),false,Nil,"test4")
+      an [Exception] should be thrownBy resultService.addResult(resultNotAuthorized)
     }
 
     it("devrait avoir 1 resultats vue dans la liste aprés la vision d'un resultat") {

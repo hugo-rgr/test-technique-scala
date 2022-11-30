@@ -7,23 +7,11 @@ class ResultService {
   private var resultsList: List[Result] = List()
 
 
-  def addResult(result:Result) = {
-    var idExists: Boolean = false
-    var i: Int = 0
-    val resLength: Int = getAllResult.length
-
-    while(idExists == false && i != resLength){
-      if(resultsList(i).id == result.id){
-        System.err.println("ERREUR : l'id est deja existant")
-        idExists = true
-      }
-      i+= 1
+  def addResult(result:Result) =
+    resultsList.exists(_.id == result.id) match {
+      case true => throw new Exception("Il y a deja un resultat ayant cet id")
+      case false => resultsList = result :: resultsList
     }
-
-    if(idExists == false){
-      resultsList = result :: resultsList
-    }
-  }
 
 
   def seenUpdate(idResult:Int, seen:Boolean) = {
