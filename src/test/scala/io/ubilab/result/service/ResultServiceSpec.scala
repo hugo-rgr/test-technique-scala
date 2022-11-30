@@ -82,7 +82,8 @@ class ResultServiceSpec extends AnyFunSpec with Matchers {
     }
 
     it("ne devrait pas planté aprés la vision d\\'un resultat non ajouté") {
-      resultService.seenResult(100)
+      val resNotAdded = Result(30,50,List(38),false,Nil,"test5")
+      noException should be thrownBy resultService.seenResult(resNotAdded.id)
     }
 
   }
