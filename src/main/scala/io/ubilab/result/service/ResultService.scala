@@ -6,7 +6,6 @@ class ResultService {
 
   private var resultsList: List[Result] = List()
 
-
   def addResult(result:Result) =
     resultsList.exists(_.id == result.id) match {
       case true => throw new Exception("Il y a deja un resultat ayant cet id")
@@ -14,23 +13,11 @@ class ResultService {
     }
 
 
-  def seenUpdate(idResult:Int, seen:Boolean) = {
-    var idSeen: Boolean = false
-    var i: Int = 0
-    val listLength: Int = getAllResult.length
-
-    while(idSeen == false && i != listLength){ //id is unique, no need to continue when it is found
-      var res = resultsList(i)
-
-      if(res.id == idResult){
-        val resCopy = res.copy(isSeen=seen) //preserve full immutability of Result objects (no turning isSeen into a var)
-        resultsList = resultsList.updated(i,resCopy)
-        idSeen = true
-      }
-
-      i+=1
+  def seenUpdate(idResult:Int, seen:Boolean) =
+    resultsList.find(_.id==idResult) match {
+      case Some(res) => resultsList = resultsList.updated(resultsList.indexOf(res), res.copy(isSeen=seen))
+      case None =>
     }
-  }
 
   def seenResult(idResult:Int) =
     seenUpdate(idResult, seen=true)
