@@ -54,11 +54,11 @@ class ResultService {
   def numberOfEventSeen:Int = {
     var somme: Int = 0
     for(result <- resultsList){
-      somme+= result.eventResults.filter(_.id=="seen").count(z => true)
+      somme+= result.eventResults.filter(_.id=="seen").count(_ => true)
     }
     return somme
   }
-  
+
 }
 
 

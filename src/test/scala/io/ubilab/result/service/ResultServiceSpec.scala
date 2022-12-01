@@ -130,11 +130,11 @@ class ResultServiceSpec extends AnyFunSpec with Matchers {
       val unseenEvent = resultService.getAllResult.last.eventResults.last
       unseenEvent.id shouldBe a ["unseen"]
 
-      seenEvent.createdAt.getTime should not equal (unseenEvent.createdAt.getTime)
+      seenEvent.createdAt.getTime should not equal unseenEvent.createdAt.getTime
     }
 
     it("devrait avoir une fonction qui retourne une liste ordonnée des resultats par rapport au dernier modifier") {
-      resultService.getAllResultSorted() shouldEqual List(result2, result3, result1)
+      resultService.getAllResultSorted shouldEqual List(result2, result3, result1)
     }
 
     it("devrait avoir une fonction qui retourne le nombre d'événements vus") {
