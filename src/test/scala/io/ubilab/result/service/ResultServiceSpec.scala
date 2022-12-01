@@ -1,9 +1,12 @@
 package io.ubilab.result.service
 
 import io.ubilab.result.model.Result
+import io.ubilab.result.model.EventResult
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+
+import java.util.Date
 
 class ResultServiceSpec extends AnyFunSpec with Matchers {
 
@@ -90,22 +93,61 @@ class ResultServiceSpec extends AnyFunSpec with Matchers {
 
 
   describe("Après l'ajout de 3 résultats,") {
-    pending
     // init le service avec 3 resultats
+    val resultService = ResultService.build
+    val result1 = Result(46,76,List(42),false,Nil,"test1")
+    Thread.sleep(10)
+    val result2 = Result(3,98,List(46),false,Nil,"test2")
+    Thread.sleep(10)
+    val result3 = Result(59,70,List(38),false,Nil,"test3")
+    resultService.addResult(result1)
+    resultService.addResult(result2)
+    resultService.addResult(result3)
+
     it("devrait avoir la list des résultat dans l'order de création ( en se basant sur les events de création)") {
-      true shouldEqual false
+      resultService.getAllResult shouldEqual List(result1, result2, result3)
     }
 
     it("devrait avoir 1 event a la date de maintenant quand 1 résultat est vue") {
-      true shouldEqual false
+      Thread.sleep(10)
+      resultService.seenResult(result1.id)
+      resultService.getAllResultSeen.length shouldEqual 1
+
+      val seenEvent: EventResult = resultService.getAllResultSeen.head.eventResults.last
+      seenEvent.id shouldBe a["seen"]
+
+      val currentDate: Date = new Date()
+      seenEvent.createdAt.getTime shouldEqual currentDate.getTime +- 2000
     }
 
     it("devrait avoir 2 events avec 2 dates différent aprés la vision d'un resultat puis la suppression de la vision") {
-      true shouldEqual false
+      val seenEvent = resultService.getAllResult.head.eventResults.last
+      seenEvent.id shouldBe a["seen"]
+
+      Thread.sleep(1000)
+      resultService.unseenResult(result1.id)
+
+      val unseenEvent = resultService.getAllResult.last.eventResults.last
+      unseenEvent.id shouldBe a["unseen"]
+
+      seenEvent.createdAt.getTime should not equal (unseenEvent.createdAt.getTime)
     }
 
     it("devrait avoir une fonction qui retourne une liste ordonnée des resultats par rapport au dernier modifier") {
-      true shouldEqual false
+      resultService.getAllResultSorted() shouldEqual List(result2, result3, result1)
+    }
+
+    it("devrait avoir une fonction qui retourne le nombre d'événements vus") {
+      resultService.numberOfEventSeen shouldEqual 1
+
+      resultService.seenResult(result1.id)
+      resultService.numberOfEventSeen shouldEqual 2
+
+      resultService.seenResult(result2.id)
+      resultService.numberOfEventSeen shouldEqual 3
+
+      resultService.seenResult(result3.id)
+      resultService.numberOfEventSeen shouldEqual 4
     }
   }
 

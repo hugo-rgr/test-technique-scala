@@ -12,5 +12,5 @@ case class Result(id:              Int,
                   idOwner:         Int,
                   idRecipients:    List[Int],
                   isSeen:          Boolean,
-                  eventResults:    List[EventResult],
+                  var eventResults:    List[EventResult],
                   contentOfResult: String)
