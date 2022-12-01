@@ -4,21 +4,17 @@ import io.ubilab.result.model.Result
 import io.ubilab.result.model.EventResult
 
 import java.util.Date
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.text.SimpleDateFormat
 
 class ResultService {
 
   private var resultsList: List[Result] = List()
-  val format: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss") 
 
 
   def addResult(result:Result) =
     resultsList.exists(_.id == result.id) match {
       case true => throw new Exception("Il y a deja un resultat ayant cet id")
       case false => {
-        result.eventResults = new EventResult("created", result.idOwner, format.parse(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss").format(LocalDateTime.now))) :: result.eventResults
+        result.eventResults = new EventResult("created", result.idOwner, new Date()) :: result.eventResults
         resultsList = resultsList :+ result
       }
     }
@@ -27,7 +23,7 @@ class ResultService {
   def seenResult(idResult:Int) =
     resultsList.find(_.id==idResult) match {
       case Some(res) => {
-        res.eventResults = new EventResult("seen", res.idOwner, format.parse(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss").format(LocalDateTime.now))) :: res.eventResults
+        res.eventResults = new EventResult("seen", res.idOwner, new Date()) :: res.eventResults
         resultsList = resultsList.updated(resultsList.indexOf(res), res.copy(isSeen=true))
       }
       case None =>
@@ -37,7 +33,7 @@ class ResultService {
   def unseenResult(idResult:Int) =
     resultsList.find(_.id==idResult) match {
       case Some(res) => {
-        res.eventResults = new EventResult("unseen", res.idOwner, format.parse(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss").format(LocalDateTime.now))) :: res.eventResults
+        res.eventResults = new EventResult("unseen", res.idOwner, new Date()) :: res.eventResults
         resultsList = resultsList.updated(resultsList.indexOf(res), res.copy(isSeen=false))
       }
       case None =>
@@ -62,6 +58,7 @@ class ResultService {
     }
     return somme
   }
+  
 }
 
 

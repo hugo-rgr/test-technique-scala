@@ -114,7 +114,7 @@ class ResultServiceSpec extends AnyFunSpec with Matchers {
       resultService.getAllResultSeen.length shouldEqual 1
 
       val seenEvent: EventResult = resultService.getAllResultSeen.head.eventResults.last
-      seenEvent.id shouldBe a["seen"]
+      seenEvent.id shouldBe a ["seen"]
 
       val currentDate: Date = new Date()
       seenEvent.createdAt.getTime shouldEqual currentDate.getTime +- 2000
@@ -122,13 +122,13 @@ class ResultServiceSpec extends AnyFunSpec with Matchers {
 
     it("devrait avoir 2 events avec 2 dates différent aprés la vision d'un resultat puis la suppression de la vision") {
       val seenEvent = resultService.getAllResult.head.eventResults.last
-      seenEvent.id shouldBe a["seen"]
+      seenEvent.id shouldBe a ["seen"]
 
       Thread.sleep(1000)
       resultService.unseenResult(result1.id)
 
       val unseenEvent = resultService.getAllResult.last.eventResults.last
-      unseenEvent.id shouldBe a["unseen"]
+      unseenEvent.id shouldBe a ["unseen"]
 
       seenEvent.createdAt.getTime should not equal (unseenEvent.createdAt.getTime)
     }
@@ -146,8 +146,11 @@ class ResultServiceSpec extends AnyFunSpec with Matchers {
       resultService.seenResult(result2.id)
       resultService.numberOfEventSeen shouldEqual 3
 
-      resultService.seenResult(result3.id)
+      resultService.seenResult(result2.id)
       resultService.numberOfEventSeen shouldEqual 4
+
+      resultService.seenResult(result3.id)
+      resultService.numberOfEventSeen shouldEqual 5
     }
   }
 
