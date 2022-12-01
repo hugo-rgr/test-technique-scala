@@ -12,7 +12,7 @@ class ResultService {
 
   def addResult(result:Result) =
     resultsList.exists(_.id == result.id) match {
-      case true => throw new Exception("Il y a deja un resultat ayant cet id")
+      case true => throw new Exception("Erreur: Il y a deja un resultat ayant cet id")
       case false => {
         result.eventResults = new EventResult("created", result.idOwner, new Date()) :: result.eventResults
         resultsList = resultsList :+ result
@@ -39,6 +39,11 @@ class ResultService {
       case None =>
     }
 
+  def getResultById(idResult: Int):Result =
+    resultsList.find(_.id==idResult) match {
+      case Some(res) => return res
+      case None => throw new Exception("Erreur: Pas de résultat pour cet id")
+    }
 
   def getAllResult():List[Result] = resultsList
 
@@ -50,6 +55,12 @@ class ResultService {
 
   def getAllResultSorted():List[Result] =
     resultsList.sortBy(_.eventResults.head.createdAt.getTime)
+
+  def getEventDateByIds(idEvent: String, idResult: Int): Date =
+    getResultById(idResult).eventResults.find(_.id==idEvent) match {
+      case Some(event) => return event.createdAt
+      case None => throw new Exception("Erreur: Pas de date pour ces ids")
+    } 
 
   def numberOfEventSeen:Int = {
     var somme: Int = 0

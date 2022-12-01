@@ -93,10 +93,12 @@ class ResultServiceSpec extends AnyFunSpec with Matchers {
 
 
   describe("Après l'ajout de 3 résultats,") {
+
     // init le service avec 3 resultats
+
     val resultService = ResultService.build
     val result1 = Result(46,76,List(42),false,Nil,"test1")
-    Thread.sleep(10)
+    Thread.sleep(10) // This and all the following Thread.sleep are for used for comparison
     val result2 = Result(3,98,List(46),false,Nil,"test2")
     Thread.sleep(10)
     val result3 = Result(59,70,List(38),false,Nil,"test3")
@@ -121,20 +123,21 @@ class ResultServiceSpec extends AnyFunSpec with Matchers {
     }
 
     it("devrait avoir 2 events avec 2 dates différent aprés la vision d'un resultat puis la suppression de la vision") {
-      val seenEvent = resultService.getAllResult.head.eventResults.last
-      seenEvent.id shouldBe a ["seen"]
+      resultService.getAllResult.head.eventResults.last.id shouldBe a ["seen"]
 
-      Thread.sleep(1000)
-      resultService.unseenResult(result1.id)
+      Thread.sleep(10)
 
-      val unseenEvent = resultService.getAllResult.last.eventResults.last
-      unseenEvent.id shouldBe a ["unseen"]
-
-      seenEvent.createdAt.getTime should not equal unseenEvent.createdAt.getTime
+      resultService.unseenResult(46)     
+      resultService.getAllResult.last.eventResults.last.id shouldBe a ["unseen"]
+      
+      resultService.getEventDateByIds("seen", 46) should not equal resultService.getEventDateByIds("unseen", 46)
     }
 
     it("devrait avoir une fonction qui retourne une liste ordonnée des resultats par rapport au dernier modifier") {
-      resultService.getAllResultSorted shouldEqual List(result2, result3, result1)
+      val res1 = resultService.getResultById(46) //using result1, result2 and result3 doesn't work
+      val res2 = resultService.getResultById(3)
+      val res3 = resultService.getResultById(59)
+      resultService.getAllResultSorted shouldEqual List(res2, res3, res1)
     }
 
     it("devrait avoir une fonction qui retourne le nombre d'événements vus") {
